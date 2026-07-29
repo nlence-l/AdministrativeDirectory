@@ -31,11 +31,11 @@ foreach ($group in $groups) {
     }
 }
 
-if (-not (Get-ADGroup -Filter "Name -eq 'Administrator'" -ErrorAction SilentlyContinue)) {
-    New-ADGroup -Name "Administrator" -GroupScope Global -GroupCategory Security -Path "OU=Administration,$domainDN"
-    Write-Host "Created group: Administrator"
+if (-not (Get-ADGroup -Filter "Name -eq 'Superman'" -ErrorAction SilentlyContinue)) {
+    New-ADGroup -Name "Superman" -GroupScope Global -GroupCategory Security -Path "OU=Administration,$domainDN"
+    Write-Host "Created group: Superman"
 } else {
-    Write-Host "Group already exists, skipping: Administrator"
+    Write-Host "Group already exists, skipping: Superman"
 }
 
 # Create the disks
