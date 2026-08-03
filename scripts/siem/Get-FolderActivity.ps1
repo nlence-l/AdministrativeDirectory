@@ -98,10 +98,12 @@ $results = foreach ($event in $events) {
     }
 
     $objectName = $data['ObjectName']
+    $folderName = $Path  -replace '^[A-Za-z]:', ''
+    $normalizedFolderName = $folderName -replace '/', '\'
 
     # Keep only events whose object is the folder or something inside it
-    if (-not $objectName -or $objectName -notlike "$Path*") {
-        continue
+    if (-not $objectName -or $objectName -notlike "*$normalizedFolderName*") {
+         continue
     }
 
     $account = $data['SubjectUserName']
