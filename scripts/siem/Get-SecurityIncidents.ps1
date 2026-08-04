@@ -37,7 +37,6 @@ param(
 # Event IDs treated as security incidents, with a severity and description.
 $incidentTypes = @{
     4625 = @{ Severity = 'Warning';  Desc = 'Failed logon' }
-    4740 = @{ Severity = 'High';     Desc = 'Account locked out' }
     4771 = @{ Severity = 'Warning';  Desc = 'Kerberos pre-authentication failed' }
     4776 = @{ Severity = 'Warning';  Desc = 'Credential validation failed' }
     4723 = @{ Severity = 'Info';     Desc = 'Password change attempt' }
@@ -51,7 +50,7 @@ $incidentTypes = @{
     4964 = @{ Severity = 'High';     Desc = 'Special privileges assigned to new logon' }
 }
 
-$ids = $incidentTypes.Keys
+$ids = @($incidentTypes.Keys)
 
 $filter = @{
     LogName = 'Security'
@@ -63,8 +62,9 @@ if ($End)   { $filter['EndTime']   = $End }
 try {
     $events = Get-WinEvent -ComputerName $ComputerName -FilterHashtable $filter -ErrorAction Stop
 }
-catch [Exception] {
-    if ($_.Exception.Message -match 'No events were found') {
+catch {
+    if ($_.Exception -is [System.Diagnostics.Eventing.Reader.EventLogNotFoundException] -or
+        $_.Exception.Message -match 'No events were found') {
         Write-Host "No security incidents found."
         return
     }
